@@ -1,18 +1,22 @@
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: #f0f0f0;
+    margin: 0;
 }
 
 .board {
     display: flex;
     gap: 10px;
     padding: 20px;
+    align-items: flex-start;
 }
 
 .column {
     background: #ddd;
     padding: 10px;
     width: 300px;
+    border-radius: 5px;
+    min-height: 100px;
 }
 
 .card {
@@ -20,13 +24,46 @@ body {
     padding: 10px;
     margin-bottom: 10px;
     cursor: grab;
+    position: relative;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 }
 
 .card.dragging {
     opacity: 0.5;
+    cursor: grabbing;
+}
+
+.card .delete {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    color: #888;
+}
+
+.card .delete:hover {
+    color: #000;
+}
+
+.card:hover .delete {
+    display: block;
+}
+
+.placeholder {
+    background: #c4c9d2;
+    border-radius: 3px;
+    margin-bottom: 10px;
 }
 
 .add-btn {
     cursor: pointer;
-    color: blue;
+    color: #0b66e4;
+    margin-top: 10px;
+}
+
+.add-btn:hover {
+    text-decoration: underline;
 }
