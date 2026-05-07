@@ -53,6 +53,10 @@ function render() {
 
     column.addEventListener('dragover', (e) => {
       e.preventDefault();
+
+      if (!container.contains(placeholder)) {
+        container.appendChild(placeholder);
+      }
     });
 
     column.addEventListener('drop', () => {
@@ -61,12 +65,13 @@ function render() {
       const id = dragged.dataset.id;
       let moved = null;
 
-      data.forEach(c => {
-        c.cards = c.cards.filter(card => {
+      data.forEach((c) => {
+        c.cards = c.cards.filter((card) => {
           if (card.id == id) {
             moved = card;
             return false;
           }
+
           return true;
         });
       });
@@ -75,6 +80,8 @@ function render() {
         data[colIndex].cards.push(moved);
       }
 
+      placeholder.remove();
+
       saveData(data);
       render();
     });
@@ -82,7 +89,9 @@ function render() {
     container.addEventListener('dragover', (e) => {
       e.preventDefault();
 
-      const cards = container.querySelectorAll('.card:not(.dragging)');
+      const cards = container.querySelectorAll(
+        '.card:not(.dragging)',
+      );
 
       if (cards.length === 0) {
         container.appendChild(placeholder);
@@ -104,12 +113,13 @@ function render() {
       const id = dragged.dataset.id;
       let moved = null;
 
-      data.forEach(c => {
-        c.cards = c.cards.filter(card => {
+      data.forEach((c) => {
+        c.cards = c.cards.filter((card) => {
           if (card.id == id) {
             moved = card;
             return false;
           }
+
           return true;
         });
       });
@@ -126,6 +136,7 @@ function render() {
       }
 
       placeholder.remove();
+
       saveData(data);
       render();
     });
@@ -144,7 +155,12 @@ function render() {
 
       del.addEventListener('click', (e) => {
         e.stopPropagation();
-        data[colIndex].cards = data[colIndex].cards.filter(c => c.id !== card.id);
+
+        data[colIndex].cards =
+          data[colIndex].cards.filter(
+            (c) => c.id !== card.id,
+          );
+
         saveData(data);
         render();
       });
@@ -155,19 +171,28 @@ function render() {
         dragged = el;
 
         const rect = el.getBoundingClientRect();
+
         const shiftX = e.clientX - rect.left;
         const shiftY = e.clientY - rect.top;
 
-        e.dataTransfer.setDragImage(el, shiftX, shiftY);
+        e.dataTransfer.setDragImage(
+          el,
+          shiftX,
+          shiftY,
+        );
 
         placeholder.style.height = el.offsetHeight + 'px';
+
+        placeholder.remove();
 
         el.classList.add('dragging');
       });
 
       el.addEventListener('dragend', () => {
         dragged = null;
+
         el.classList.remove('dragging');
+
         placeholder.remove();
       });
 
@@ -180,6 +205,7 @@ function render() {
 
     addBtn.addEventListener('click', () => {
       const text = prompt('Введите текст');
+
       if (!text) return;
 
       data[colIndex].cards.push({
@@ -192,6 +218,7 @@ function render() {
     });
 
     column.append(title, container, addBtn);
+
     board.appendChild(column);
   });
 }
